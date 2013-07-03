@@ -1,6 +1,6 @@
 package Git::ReleaseRepo::Command::release;
 {
-  $Git::ReleaseRepo::Command::release::VERSION = '0.001';
+  $Git::ReleaseRepo::Command::release::VERSION = '0.002';
 }
 # ABSTRACT: Perform a release
 
@@ -9,6 +9,8 @@ use warnings;
 use Moose;
 use Git::ReleaseRepo -command;
 use Git::Repository;
+
+with 'Git::ReleaseRepo::WithVersionPrefix';
 
 sub description {
     return 'Perform a release';
@@ -98,7 +100,7 @@ Git::ReleaseRepo::Command::release - Perform a release
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 AUTHOR
 

@@ -1,6 +1,6 @@
 package Git::ReleaseRepo::Command::update;
 {
-  $Git::ReleaseRepo::Command::update::VERSION = '0.001';
+  $Git::ReleaseRepo::Command::update::VERSION = '0.002';
 }
 # ABSTRACT: Update a deployed release repository
 
@@ -32,11 +32,10 @@ around opt_spec => sub {
 
 augment execute => sub {
     my ( $self, $opt, $args ) = @_;
-    my $repo_name   = $self->repo_name;
     my $repo        = $self->git;
     my $branch      = $opt->{master} ? "master"
                     : $opt->{branch} ? $opt->{branch}
-                    : $self->config->{ $repo_name }{track};
+                    : $self->config->{track};
     my $version     = $opt->{master}  ? "master"
                     : $repo->latest_version( $branch );
     $repo->checkout( $version );
@@ -63,7 +62,7 @@ Git::ReleaseRepo::Command::update - Update a deployed release repository
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 AUTHOR
 

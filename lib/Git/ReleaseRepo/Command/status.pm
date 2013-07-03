@@ -1,6 +1,6 @@
 package Git::ReleaseRepo::Command::status;
 {
-  $Git::ReleaseRepo::Command::status::VERSION = '0.001';
+  $Git::ReleaseRepo::Command::status::VERSION = '0.002';
 }
 # ABSTRACT: Show the status of a release repository
 
@@ -9,6 +9,8 @@ use warnings;
 use List::MoreUtils qw( uniq );
 use Moose;
 use Git::ReleaseRepo -command;
+
+with 'Git::ReleaseRepo::WithVersionPrefix';
 
 sub description {
     return 'Show the status of a release repository';
@@ -29,7 +31,7 @@ augment execute => sub {
     my ( $since_version, %outdated, %diff );
     my $git = $self->git;
     # Deploy branch
-    if ( my $track = $self->config->{ $self->repo_name }{track} ) {
+    if ( my $track = $self->config->{track} ) {
         my $current = $git->current_release;
         print "On release $current";
         my $latest = $git->latest_version( $track );
@@ -84,7 +86,7 @@ Git::ReleaseRepo::Command::status - Show the status of a release repository
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 AUTHOR
 

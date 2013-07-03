@@ -1,6 +1,6 @@
 package Git::ReleaseRepo::Command::add;
 {
-  $Git::ReleaseRepo::Command::add::VERSION = '0.001';
+  $Git::ReleaseRepo::Command::add::VERSION = '0.002';
 }
 # ABSTRACT: Add a module to the next release
 
@@ -9,6 +9,8 @@ use warnings;
 use Moose;
 use Git::ReleaseRepo -command;
 use File::Spec::Functions qw( catdir );
+
+with 'Git::ReleaseRepo::WithVersionPrefix';
 
 override usage_desc => sub {
     my ( $self ) = @_;
@@ -120,7 +122,7 @@ Git::ReleaseRepo::Command::add - Add a module to the next release
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 DESCRIPTION
 

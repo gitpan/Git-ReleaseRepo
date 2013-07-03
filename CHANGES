@@ -1,9 +1,121 @@
 ==================================================
-Changes from 2012-06-18 00:00:00 +0000 to present.
+Changes from 2012-07-03 00:00:00 +0000 to present.
 ==================================================
 
 ------------------------------------------
-version 0.001 at 2013-06-18 21:06:20 +0000
+version 0.002 at 2013-07-03 16:25:31 +0000
+------------------------------------------
+
+  Change: 7804c53da1449cbc18b10b2a6bdc4f074dfb6e48
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-03 12:11:08 +0000
+
+    add more tests for init.t 
+
+  Change: f184f8933ee3eaf320276b65c7f2843c321118f0
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-03 12:04:43 +0000
+
+    fix test module sending wrong arguments to test_app 
+
+  Change: 157211c1536b92597b37faf4911992fec7ee4610
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-03 12:04:43 +0000
+
+    require a version_prefix when initializing a new release repo 
+
+  Change: 31d255ca198c469855a470ae9805c0bd5abf1094
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-02 17:51:53 +0000
+
+    require a version_prefix when initializing a new release repo 
+
+  Change: 32a6e2e9714e5c5d73ec6353066ce3e5dc18e35b
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-02 17:48:11 +0000
+
+    provide a method to not check errors after running command 
+
+  Change: 8b46305dace6a31c7972b141efc5beee48000a8c
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-02 17:41:53 +0000
+
+    add test library 
+
+  Change: 0ca4910df434c8b1977e1883ba3143e23028cf67
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-02 17:27:33 +0000
+
+    move to integration.t, to start doing bugfix tests 
+
+  Change: eec5a0144a6cac412f0289193a77c58b15eb7b83
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-06-25 18:25:18 +0000
+
+    update command now works with new architecture 
+
+  Change: c4f46a1316985f084d9f641aef2a633f80a73428
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-06-25 18:22:10 +0000
+
+    deploy command now works with new architecture 
+
+  Change: e2092ee7807596272e2a6d3f07bc86c0b630fab4
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-06-25 18:03:18 +0000
+
+    "add" and "release" commands now work with new architecture 
+
+  Change: e1b14ef538b91c395e14cd05803680298d26e0af
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-06-25 18:02:03 +0000
+
+    status command now works with new architecture 
+
+  Change: 283f3ff71c9bec91ac7af86720af62e43adde1ba
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-06-25 17:54:08 +0000
+
+    init command works with new architecture 
+
+  Change: 4ea42d07f049116d5bf443fcc1f2a957f7eccda2
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-06-25 17:49:22 +0000
+
+    let the tempdir get deleted by moving cwd back 
+
+  Change: 038e2e530d827f3e55883b36e7483fe96589e68d
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-06-25 17:40:03 +0000
+
+    "use" command is not necessary anymore, its function is in init 
+
+  Change: 66d2099bfc9337ad7357dd1e7fd3fb4287f731d7
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-06-25 17:31:06 +0000
+
+    start version 0.002 development 
+
+  Change: 43138befd85021511ac2a880504be0fa1996270c
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-06-25 17:06:49 +0000
+
+    use the current directory as the git repo, like regular git commands
+
+    this makes it easier to figure out what's going on. no configuration
+    file or "use" command. and it helps with using the repository as a
+    regular repository as well.
+
+    All in all, this is a far better architecture. 
+
+  Change: 489303bd59d1e4d376c579dc9d711547a6eaa192
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-06-25 17:06:31 +0000
+
+    change the name to allow use as "git release" 
+
+------------------------------------------
+version 0.001 at 2013-06-18 20:59:08 +0000
 ------------------------------------------
 
   Change: 3a28473ea2f03d0a563ab144d0ede7622394b15f

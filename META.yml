@@ -31,4 +31,4 @@ resources:
   bugtracker: https://github.com/preaction/{{$dist->name}}/issues
   homepage: https://github.com/preaction/{{$dist->name}}
   repository: https://github.com/preaction/{{$dist->name}}.git
-version: 0.001
+version: 0.002

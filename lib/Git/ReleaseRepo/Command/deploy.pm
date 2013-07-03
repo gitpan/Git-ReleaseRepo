@@ -1,15 +1,17 @@
 package Git::ReleaseRepo::Command::deploy;
 {
-  $Git::ReleaseRepo::Command::deploy::VERSION = '0.001';
+  $Git::ReleaseRepo::Command::deploy::VERSION = '0.002';
 }
 # ABSTRACT: Deploy a release repository
 
 use strict;
 use warnings;
 use Moose;
-extends 'Git::ReleaseRepo::CreateCommand';
 use File::Spec::Functions qw( catdir );
 use File::Copy qw( move );
+use Cwd qw( getcwd );
+
+extends 'Git::ReleaseRepo::CreateCommand';
 
 override usage_desc => sub {
     my ( $self ) = @_;
@@ -24,6 +26,7 @@ sub validate_args {
     my ( $self, $opt, $args ) = @_;
     return $self->usage_error( "Repository URL is required" ) if ( @$args < 1 );
     return $self->usage_error( "Too many arguments" ) if ( @$args > 2 );
+    return $self->usage_error( 'Must specify --version_prefix' ) unless $opt->{version_prefix};
 }
 
 around opt_spec => sub {
@@ -46,7 +49,7 @@ augment execute => sub {
         $rename_repo = 1;
         $repo_name = join "-", $self->repo_name_from_url( $args->[0] ), 'deploy', time;
     }
-    my $repo_dir = catdir( $self->repo_root, $repo_name );
+    my $repo_dir = catdir( getcwd, $repo_name );
     my $cmd = Git::Repository->command( clone => $args->[0], $repo_dir );
     my @stderr = readline $cmd->stderr;
     my @stdout = readline $cmd->stdout;
@@ -56,7 +59,7 @@ augment execute => sub {
             . "\nSTDOUT: " . ( join "\n", @stdout );
     }
     my $repo = Git::Repository->new( work_tree => $repo_dir );
-    $repo->release_prefix( $self->release_prefix );
+    $repo->release_prefix( $opt->{version_prefix} );
     my $version = $opt->{master}  ? "master"
                 : $opt->{branch} ? $repo->latest_version( $opt->{branch} )
                 : $repo->latest_version;
@@ -84,12 +87,14 @@ augment execute => sub {
     }
     if ( $rename_repo ) {
         $repo_name = join "-", $self->repo_name_from_url( $args->[0] ), $branch;
-        move( $repo_dir, catdir( $self->repo_root, $repo_name ) );
+        my $new_repo_dir = catdir( getcwd, $repo_name );
+        move( $repo_dir, $new_repo_dir );
+        $repo = Git::Repository->new( work_tree => $new_repo_dir );
     }
     # Set new default repo and configuration
     # Deploy creates a detatched HEAD, so we need to know what branch we're
     # tracking
-    $self->update_config( $opt, $repo_name, { track => $branch } );
+    $self->update_config( $opt, $repo, { track => $branch } );
 };
 
 1;
@@ -103,7 +108,7 @@ Git::ReleaseRepo::Command::deploy - Deploy a release repository
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 AUTHOR
 

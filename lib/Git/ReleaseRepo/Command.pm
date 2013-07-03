@@ -1,12 +1,13 @@
 package Git::ReleaseRepo::Command;
 {
-  $Git::ReleaseRepo::Command::VERSION = '0.001';
+  $Git::ReleaseRepo::Command::VERSION = '0.002';
 }
 
 use strict;
 use warnings;
 use Moose;
 use App::Cmd::Setup -command;
+use Cwd qw( getcwd );
 use YAML qw( LoadFile DumpFile );
 use List::Util qw( first );
 use File::HomeDir;
@@ -18,7 +19,7 @@ has config_file => (
     isa     => 'Str',
     lazy    => 1,
     default => sub {
-        catfile( $_[0]->repo_root, '.release', 'config' );
+        catfile( $_[0]->repo_dir, '.git', 'release' );
     },
 );
 
@@ -42,22 +43,11 @@ sub write_config {
     return DumpFile( $self->config_file, $self->config );
 }
 
-has repo_name => (
-    is      => 'rw',
-    isa     => 'Str',
-    lazy    => 1,
-    default => sub {
-        my ( $self ) = @_;
-        my $config = $self->config;
-        return first { $config->{$_}{default} } keys %$config;
-    },
-);
-
 has repo_dir => (
     is      => 'rw',
     isa     => 'Str',
     lazy    => 1,
-    default => sub { catdir( $_[0]->repo_root, $_[0]->repo_name ) },
+    default => sub { getcwd },
 );
 
 has git => (
@@ -70,7 +60,6 @@ has git => (
             work_tree => $_[0]->repo_dir,
             git_dir => catdir( $_[0]->repo_dir, '.git' ),
         );
-        $git->release_prefix( $_[0]->release_prefix );
         return $git;
     },
 );
@@ -80,16 +69,7 @@ has release_prefix => (
     isa     => 'Str',
     lazy    => 1,
     default => sub {
-        return $_[0]->config->{$_[0]->repo_name}{version_prefix};
-    },
-);
-
-has repo_root => (
-    is      => 'rw',
-    isa     => 'Str',
-    lazy    => 1,
-    default => sub {
-        return $ENV{GIT_RELEASE_ROOT} || catdir( File::HomeDir->my_home, 'release' );
+        return $_[0]->config->{version_prefix};
     },
 );
 
@@ -101,33 +81,13 @@ sub repo_name_from_url {
 }
 
 sub opt_spec {
-    return (
-        [ 'repo_dir=s' => 'The path to the release repository' ],
-        [ 'prefix=s' => 'The release version prefix, like "v" or "ops-"' ],
-        [ 'root=s' => 'The root directory for release repositories' ],
-        [ 'repo=s' => 'The name of the repo to use. Defaults to the repo selected by "use"' ],
-    );
+    return ();
 }
 
 sub execute {
     my ( $self, $opt, $args ) = @_;
 
-    if ( exists $opt->{repo} ) {
-        $self->repo_name( $opt->{repo} );
-    }
-    if ( exists $opt->{root} ) {
-        $self->repo_root( $opt->{root} );
-    }
-    if ( exists $opt->{repo_dir} ) {
-        $self->repo_dir( $opt->{repo_dir} );
-    }
-    if ( exists $opt->{prefix} ) {
-        $self->release_prefix( $opt->{prefix} );
-    }
-
     inner();
-
-    $self->write_config;
 }
 
 no Moose;

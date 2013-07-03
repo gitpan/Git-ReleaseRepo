@@ -1,0 +1,1 @@
+{"subroutine":[[3,"BEGIN"]],"statement":[3,3,3],"file":"blib/lib/Git/ReleaseRepo/WithVersionPrefix.pm","digest":"50a634be49624ba45aee76c55c8861c0","start":{"3":{"BEGIN":[{"pod":null,"subroutine":null,"statement":null,"time":null,"branch":null,"condition":null}]},"-1":{"__COVER__":[{"pod":null,"subroutine":1,"statement":3,"time":null,"branch":null,"condition":null}]}}}
