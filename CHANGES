@@ -1,9 +1,31 @@
 ==================================================
-Changes from 2012-07-03 00:00:00 +0000 to present.
+Changes from 2012-07-06 00:00:00 +0000 to present.
 ==================================================
 
 ------------------------------------------
-version 0.002 at 2013-07-03 16:25:31 +0000
+version 0.003 at 2013-07-06 00:53:19 +0000
+------------------------------------------
+
+  Change: ec98906908b8d3caba6ed30b72623e88e869f1c4
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2013-07-05 19:53:08 +0000
+
+    fix META URLs 
+
+  Change: ad6c1e420879f155f276867191e863a391aa6b86
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2013-07-05 19:37:30 +0000
+
+    fix dist.ini and .gitignore 
+
+  Change: 88f88f1868291057802a43c189b753fe8e0b9af2
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2013-07-05 14:00:07 +0000
+
+    add some diag messages 
+
+------------------------------------------
+version 0.002 at 2013-07-03 16:11:08 +0000
 ------------------------------------------
 
   Change: 7804c53da1449cbc18b10b2a6bdc4f074dfb6e48

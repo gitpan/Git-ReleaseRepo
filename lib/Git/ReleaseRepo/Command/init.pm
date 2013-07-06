@@ -1,6 +1,6 @@
 package Git::ReleaseRepo::Command::init;
 {
-  $Git::ReleaseRepo::Command::init::VERSION = '0.002';
+  $Git::ReleaseRepo::Command::init::VERSION = '0.003';
 }
 # ABSTRACT: Initialize Git::ReleaseRepo
 
@@ -51,6 +51,7 @@ augment execute => sub {
 
 1;
 
+__END__
 
 =pod
 
@@ -60,7 +61,7 @@ Git::ReleaseRepo::Command::init - Initialize Git::ReleaseRepo
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 AUTHOR
 
@@ -74,8 +75,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-
-__END__
-
-

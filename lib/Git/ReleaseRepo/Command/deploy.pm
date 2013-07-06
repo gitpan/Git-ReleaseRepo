@@ -1,6 +1,6 @@
 package Git::ReleaseRepo::Command::deploy;
 {
-  $Git::ReleaseRepo::Command::deploy::VERSION = '0.002';
+  $Git::ReleaseRepo::Command::deploy::VERSION = '0.003';
 }
 # ABSTRACT: Deploy a release repository
 
@@ -99,6 +99,7 @@ augment execute => sub {
 
 1;
 
+__END__
 
 =pod
 
@@ -108,7 +109,7 @@ Git::ReleaseRepo::Command::deploy - Deploy a release repository
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 AUTHOR
 
@@ -122,8 +123,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-
-__END__
-
-

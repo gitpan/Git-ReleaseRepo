@@ -13,7 +13,7 @@ configure_requires:
   ExtUtils::MakeMaker: 6.30
   Module::Build: 0.3601
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 4.300034, CPAN::Meta::Converter version 2.120921'
+generated_by: 'Dist::Zilla version 4.300035, CPAN::Meta::Converter version 2.131560'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -26,9 +26,9 @@ requires:
   File::Spec::Functions: 0
   Git::Repository: 1.26
   Moose: 2.000
-  YAML::Tiny: 1.51
+  YAML: 0.84
 resources:
-  bugtracker: https://github.com/preaction/{{$dist->name}}/issues
-  homepage: https://github.com/preaction/{{$dist->name}}
-  repository: https://github.com/preaction/{{$dist->name}}.git
-version: 0.002
+  bugtracker: https://github.com/preaction/Git-ReleaseRepo/issues
+  homepage: https://github.com/preaction/Git-ReleaseRepo
+  repository: https://github.com/preaction/Git-ReleaseRepo.git
+version: 0.003
