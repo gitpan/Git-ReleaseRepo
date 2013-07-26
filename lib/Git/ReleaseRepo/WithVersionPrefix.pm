@@ -1,6 +1,6 @@
 package Git::ReleaseRepo::WithVersionPrefix;
 {
-  $Git::ReleaseRepo::WithVersionPrefix::VERSION = '0.003';
+  $Git::ReleaseRepo::WithVersionPrefix::VERSION = '0.004';
 }
 
 use Moose::Role;

@@ -1,7 +1,7 @@
 
 use strict;
 use warnings;
-use Test::Most;
+use Test::Most 'die';
 use Test::Git;
 
 use YAML qw( LoadFile );
@@ -72,7 +72,7 @@ sub test_status($%) {
     return sub {
         for my $mod ( keys %modules ) {
             if ( not defined $modules{$mod} ) {
-                unlike $stdout, qr/^$mod/m, "module '$mod' unchanged and cannot add";
+                unlike $stdout, qr/^$mod/m, "module '$mod' unchanged and cannot update";
                 next;
             }
             my %test = map { $_ => 1 }
@@ -84,10 +84,10 @@ sub test_status($%) {
                 unlike $stdout, qr/^$mod\s+changed/m, "module '$mod' unchanged";
             }
             if ( $test{outdated} ) {
-                like $stdout, qr/^$mod.*can add/m, "module '$mod' outdated";
+                like $stdout, qr/^$mod.*can update/m, "module '$mod' outdated";
             }
             else { # not outdated
-                unlike $stdout, qr/^$mod.*can add/m, "module '$mod' outdated";
+                unlike $stdout, qr/^$mod.*can update/m, "module '$mod' outdated";
             }
         }
     };
@@ -95,13 +95,15 @@ sub test_status($%) {
 
 sub test_release_status(%) {
     chdir catdir( $rel_root, 'test-release' );
+    run_cmd( 'checkout', 'master' );
     my $result = run_cmd( 'status' );
     return test_status $result->{stdout}, @_;
 }
 
 sub test_bugfix_status(%) {
     chdir catdir( $rel_root, 'test-release' );
-    my $result = run_cmd( 'status', '--bugfix' );
+    run_cmd( 'checkout', '--bugfix' );
+    my $result = run_cmd( 'status' );
     return test_status $result->{stdout}, @_;
 }
 
@@ -169,7 +171,7 @@ subtest 'initial creation' => sub {
 
 subtest 'add new module' => sub {
     chdir $rel_repo->work_tree;
-    my $result = run_cmd( 'add', 'foo', $foo_repo->work_tree );
+    my $result = run_cmd( 'add', 'foo', 'file://' . $foo_repo->work_tree );
 
     subtest 'repository is correct' => sub {
         is_repo_clean $rel_repo;
@@ -199,7 +201,7 @@ subtest 'update module' => sub {
         => test_release_status foo => [qw( changed outdated )];
 
     chdir catdir( $rel_root, 'test-release' );
-    my $result = run_cmd( 'add', 'foo' );
+    my $result = run_cmd( 'update', 'foo' );
 
     subtest 'module status is no longer out-of-date'
         => test_release_status foo => 'changed';
@@ -207,7 +209,8 @@ subtest 'update module' => sub {
 
 subtest 'first release' => sub {
     chdir $rel_repo->work_tree;
-    my $result = run_cmd( 'release' );
+    my $result = run_cmd( 'commit' );
+    $result = run_cmd( 'push' );
 
     subtest 'release repository is correct'
         => test_repo_has_refs $rel_repo, branch => 'v0.1', tag => 'v0.1.0';
@@ -239,7 +242,8 @@ subtest 'add bugfix' => sub {
 
     subtest 'add bugfix update' => sub {
         chdir $rel_repo->work_tree;
-        my $result = run_cmd( 'add', '--bugfix', 'foo' );
+        run_cmd( 'checkout', '--bugfix' );
+        my $result = run_cmd( 'update', 'foo' );
     };
 
     subtest 'repo branch "v0.1" status is correct' => sub {
@@ -272,9 +276,11 @@ subtest 'add bugfix' => sub {
 };
 
 subtest 'update non-bugfix' => sub {
+    run_cmd( 'checkout', 'master' );
+
     subtest 'add new module' => sub {
         chdir $rel_repo->work_tree;
-        my $result = run_cmd( 'add', 'bar', $bar_repo->work_tree );
+        my $result = run_cmd( 'add', 'bar', 'file://' . $bar_repo->work_tree );
     };
     subtest 'release status is changed, not out-of-date'
         => test_release_status foo => undef, bar => 'changed';
@@ -286,7 +292,9 @@ subtest 'update non-bugfix' => sub {
 subtest 'bugfix release' => sub {
     # Only foo is released
     chdir $rel_repo->work_tree;
-    my $result = run_cmd( 'release', '--bugfix' );
+    run_cmd( 'checkout', '--bugfix' );
+    my $result = run_cmd( 'commit' );
+    run_cmd( 'push' );
 
     subtest 'release repository is correct'
         => test_repo_has_refs $rel_repo, branch => 'v0.1', tag => [qw( v0.1.0 v0.1.1 )];
@@ -303,7 +311,9 @@ subtest 'bugfix release' => sub {
 
 subtest 'second release' => sub {
     chdir $rel_repo->work_tree;
-    my $result = run_cmd( 'release' );
+    run_cmd( 'checkout', 'master' );
+    my $result = run_cmd( 'commit' );
+    run_cmd( 'push' );
 
     subtest 'release repository is correct'
         => test_repo_has_refs $rel_repo,
@@ -356,7 +366,8 @@ subtest 'bugfix release: v0.2.1' => sub {
 
     subtest 'add bugfix update' => sub {
         chdir $rel_repo->work_tree;
-        my $result = run_cmd( 'add', '--bugfix', 'foo' );
+        run_cmd( 'checkout', '--bugfix' );
+        my $result = run_cmd( 'update', 'foo' );
     };
 
     subtest 'bugfix status is changed, not out-of-date'
@@ -372,7 +383,9 @@ subtest 'bugfix release: v0.2.1' => sub {
 
     subtest 'release v0.2.1' => sub {
         chdir $rel_repo->work_tree;
-        my $result = run_cmd( 'release', '--bugfix' );
+        run_cmd( 'checkout', '--bugfix' );
+        my $result = run_cmd( 'commit' );
+        run_cmd( 'push' );
     };
 
     subtest 'release repository is correct'
@@ -399,7 +412,7 @@ subtest 'bugfix release: v0.2.1' => sub {
 
 subtest 'update deployment to v0.2.1' => sub {
     chdir catdir( $rel_root, 'test-release-v0.2' );
-    my $result = run_cmd( 'update' );
+    my $result = run_cmd( 'pull' );
     subtest 'bugfix status is unchanged, not out-of-date'
         => test_bugfix_status foo => undef;
     subtest 'release status is unchanged'
@@ -441,7 +454,7 @@ subtest 'update master for everything' => sub {
 
     # Master update shows everything!
     chdir catdir( $rel_root, 'test-release-master' );
-    my $result = run_cmd( 'update', '--master' );
+    my $result = run_cmd( 'pull', '--master' );
     my $sub_bar_readme = catfile( $rel_root, 'test-release-master', 'bar', 'README' );
     is read_file( $sub_bar_readme ), 'Bar version master', 'bar updated to master';
 };

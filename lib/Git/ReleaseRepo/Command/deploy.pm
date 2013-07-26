@@ -1,6 +1,6 @@
 package Git::ReleaseRepo::Command::deploy;
 {
-  $Git::ReleaseRepo::Command::deploy::VERSION = '0.003';
+  $Git::ReleaseRepo::Command::deploy::VERSION = '0.004';
 }
 # ABSTRACT: Deploy a release repository
 
@@ -13,20 +13,8 @@ use Cwd qw( getcwd );
 
 extends 'Git::ReleaseRepo::CreateCommand';
 
-override usage_desc => sub {
-    my ( $self ) = @_;
-    return super() . " <repo_url> [<repo_name>]";
-};
-
 sub description {
     return 'Deploy a release repository';
-}
-
-sub validate_args {
-    my ( $self, $opt, $args ) = @_;
-    return $self->usage_error( "Repository URL is required" ) if ( @$args < 1 );
-    return $self->usage_error( "Too many arguments" ) if ( @$args > 2 );
-    return $self->usage_error( 'Must specify --version_prefix' ) unless $opt->{version_prefix};
 }
 
 around opt_spec => sub {
@@ -65,7 +53,7 @@ augment execute => sub {
                 : $repo->latest_version;
     my $branch  = $opt->{master} ? "master"
                 : $opt->{branch} ? $opt->{branch}
-                : $repo->latest_release_branch;
+                : $repo->latest_release_branch( 'remotes/origin' );
     $cmd = $repo->command( checkout => $version );
     @stderr = readline $cmd->stderr;
     @stdout = readline $cmd->stdout;
@@ -74,7 +62,14 @@ augment execute => sub {
         die "Could not checkout '$version'.\nEXIT: " . $cmd->exit . "\nSTDERR: " . ( join "\n", @stderr )
             . "\nSTDOUT: " . ( join "\n", @stdout );
     }
-    $repo->run( submodule => 'update', '--init' );
+    $cmd = $repo->command( submodule => 'update', '--init' );
+    @stdout = readline $cmd->stdout;
+    @stderr = readline $cmd->stderr;
+    $cmd->close;
+    if ( $cmd->exit != 0 ) {
+        die "Could not update submodules.\nEXIT: " . $cmd->exit . "\nSTDERR: " . ( join "\n", @stderr )
+            . "\nSTDOUT: " . ( join "\n", @stdout );
+    }
     if ( $opt->{master} ) {
         my $cmd = $repo->command( submodule => 'foreach', 'git checkout master && git pull origin master' );
         my @stderr = readline $cmd->stderr;
@@ -109,7 +104,7 @@ Git::ReleaseRepo::Command::deploy - Deploy a release repository
 
 =head1 VERSION
 
-version 0.003
+version 0.004
 
 =head1 AUTHOR
 

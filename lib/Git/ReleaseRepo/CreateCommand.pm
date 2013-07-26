@@ -1,6 +1,6 @@
 package Git::ReleaseRepo::CreateCommand;
 {
-  $Git::ReleaseRepo::CreateCommand::VERSION = '0.003';
+  $Git::ReleaseRepo::CreateCommand::VERSION = '0.004';
 }
 # ABSTRACT: Base class for commands that have to create a new repository
 
@@ -11,8 +11,14 @@ extends 'Git::ReleaseRepo::Command';
 use File::Spec::Functions qw( catfile );
 use YAML qw( LoadFile DumpFile );
 
+override usage_desc => sub {
+    my ( $self ) = @_;
+    return super() . " <repo_url> [<repo_name>]";
+};
+
 sub update_config {
     my ( $self, $opt, $repo, $extra ) = @_;
+    $extra ||= {};
     my $config_file = catfile( $repo->git_dir, 'release' );
     my $config = -f $config_file ? LoadFile( $config_file ) : {};
 
@@ -28,8 +34,9 @@ sub update_config {
 
 sub validate_args {
     my ( $self, $opt, $args ) = @_;
-    $self->usage_error( "Must give a repository URL!" ) if ( @$args < 1 );
-    $self->usage_error( "Too many arguments" ) if ( @$args > 2 );
+    return $self->usage_error( "Must give a repository URL!" ) if ( @$args < 1 );
+    return $self->usage_error( "Too many arguments" ) if ( @$args > 2 );
+    return $self->usage_error( 'Must specify --version_prefix' ) unless $opt->{version_prefix};
 }
 
 around opt_spec => sub {
@@ -52,7 +59,7 @@ Git::ReleaseRepo::CreateCommand - Base class for commands that have to create a 
 
 =head1 VERSION
 
-version 0.003
+version 0.004
 
 =head1 AUTHOR
 

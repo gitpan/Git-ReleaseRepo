@@ -1,9 +1,246 @@
 ==================================================
-Changes from 2012-07-06 00:00:00 +0000 to present.
+Changes from 2012-07-26 00:00:00 +0000 to present.
 ==================================================
 
 ------------------------------------------
-version 0.003 at 2013-07-06 00:53:19 +0000
+version 0.004 at 2013-07-26 12:54:53 +0000
+------------------------------------------
+
+  Change: 4de20d438dff2d732ece97395e6c0ecd63fd7a05
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-19 15:02:51 +0000
+
+    only show deploy release status in deployed repo 
+
+  Change: 5a3129d4443b5d86cc09a063b8b3b97e1f2a459c
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-19 15:02:43 +0000
+
+    add progress bar to pull 
+
+  Change: f176502c41d9685cadbd3efb5d52c2f2207425c5
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-18 16:39:01 +0000
+
+    release v0.004 
+
+  Change: 873825e9d1bfb88403aa87743f0a0a876072c3f0
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-18 16:38:54 +0000
+
+    add pull tests 
+
+  Change: d1b12ebc322339f6cedcb3693b1ba2e1bddd51f6
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-18 16:34:12 +0000
+
+    integration should be last 
+
+  Change: 1b0412426bbd5119a11a05bbb400eda97d9fdf64
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-18 15:41:47 +0000
+
+    fix pull command to actually work 
+
+  Change: 11ac9538f1dd9509f2b2b5203221f802dc3571f7
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-18 14:24:13 +0000
+
+    add deploy test 
+
+  Change: 3e29ac5468e4da1653b0ed5abe4e35804dfe99bb
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-17 18:17:12 +0000
+
+    add missing prereq 
+
+  Change: b7ae3599b1185885047d86ea284c5516e0bcb389
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-17 18:16:45 +0000
+
+    make status a little faster 
+
+  Change: 1ba1ca8b75a652479b908ab70e9e82517c8fa208
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-17 16:08:35 +0000
+
+    add progress bars to some long tasks 
+
+  Change: 340e043c7d327a8475256f2b17a4a3519954b48e
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-17 13:38:42 +0000
+
+    status must fetch to give accurate statuses 
+
+  Change: ae329787cf7594ee841d26ea38617aa0642a2ab4
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-17 13:12:17 +0000
+
+    deploy needs to know what the origin knows
+
+    luckily, after a clone, show-ref will get the correct remote refs
+
+    not so lucky for the "status" command, later, though 
+
+  Change: 2abf11d1795c67f3885422b822d7cd48bac733ba
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-17 13:01:20 +0000
+
+    The canonical copy of the repo is now local, not origin 
+
+  Change: f66b16e02b1391cd9e866f634891b5887541282f
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-17 13:01:06 +0000
+
+    push "master" and "latest_release_branch" by default 
+
+  Change: e2f9bafb76913d769cf2089ae15c267241ab2eda
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-17 12:24:08 +0000
+
+    fix the clone command and ensure it is fully tested 
+
+  Change: 3da8ab3fac2260598d0ab351ea7143310c9e94b0
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-16 17:53:14 +0000
+
+    pushing is responsibility of the push command, not the commit command 
+
+  Change: ff137092302865732206cee50380b12dd8a0810b
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-16 17:52:19 +0000
+
+    file:// lets us push using local file repositories 
+
+  Change: 0dfbbc5bdb441b7011cc4173fcbd5059a93e36ef
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-16 17:52:02 +0000
+
+    quiet the checkout and deploy commands 
+
+  Change: 1e376839f485a4daad44d047dd1ee3fccc04f4db
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-16 16:19:13 +0000
+
+    the old update command is now called "pull" 
+
+  Change: c5b06eff1faa473298d5ba8ea3b72645cf019ff8
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-16 16:14:54 +0000
+
+    update checkout test for new test subs 
+
+  Change: 03cce0102f3da6fde443e36c08201a72a6a8ae01
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-16 16:12:20 +0000
+
+    split apart "add" to create an "update" command 
+
+  Change: b14f7837d87b350a9d86a2c01eba4a244355cdfa
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-16 15:54:45 +0000
+
+    test::more adds use strict/warnings for us 
+
+  Change: 282088d5adda7ba506edb6ce8f0308d99454e485
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-16 15:54:30 +0000
+
+    fix push test and update to new test subs 
+
+  Change: c3b6973c25e2e4ccb5c00053d92ed3ca51c6663c
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-16 15:48:40 +0000
+
+    all modules should be checked out to the same branch as super-repo 
+
+  Change: ec6b6caa945414557d6144ce9b3cccf3a0d20ade
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-16 15:40:35 +0000
+
+    add should not change which branch we're on 
+
+  Change: 873a74a863295eca2fd513adde436df5c8b9f170
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-15 16:21:42 +0000
+
+    add test for checkout command 
+
+  Change: e53841e51534186f38e96e67f82ac098f9ba741d
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-15 16:12:40 +0000
+
+    add test boilerplate functions 
+
+  Change: ee68a892f076bad8e96c5db0f5d538e8ccc92524
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-15 15:42:29 +0000
+
+    warn users if they're out-of-date 
+
+  Change: ce5f9662cd4623c19fe777ac43f94f9c276b422b
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-15 12:40:39 +0000
+
+    --bugfix is no longer on the add command 
+
+  Change: e1c7117fd70f515f129bed9915f39c748237e05f
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-15 12:38:19 +0000
+
+    fix add for new checkout command 
+
+  Change: ded4b65d1ebf37858b7bab35ddc29bbdbbe79de9
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-12 16:58:36 +0000
+
+    start removing --bugfix from everywhere and add checkout command
+    instead 
+
+  Change: b5ee84e0fe5aacaf2bbae5477f7ffc010796f4f6
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-12 15:03:59 +0000
+
+    change "update" to "pull" 
+
+  Change: 79de4c1df9da36665a6b0c4a1bea799b135b3887
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-12 15:00:52 +0000
+
+    remove reset test for now 
+
+  Change: 35a21a9712f0baeda768df2219b54e3cf20f8d68
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-12 14:49:43 +0000
+
+    add a function to create a module repo for testing 
+
+  Change: e03f143447f6e362c4dfcf2cbdd641f3cee5a6b6
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-12 14:49:34 +0000
+
+    show diagnostics when a command has an error 
+
+  Change: 893375ecfb1ae8678a550b285bbfbe52354066af
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-12 14:48:35 +0000
+
+    add push command 
+
+  Change: b41cfa45964ef1231c65448982106545b3eff61b
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-09 18:09:21 +0000
+
+    add test files for push and reset commands 
+
+  Change: 45a7bc577157474e6f6d3d0664e00ded895604ef
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-07-09 18:00:35 +0000
+
+    rename "release" command to "commit" 
+
+------------------------------------------
+version 0.003 at 2013-07-06 00:53:08 +0000
 ------------------------------------------
 
   Change: ec98906908b8d3caba6ed30b72623e88e869f1c4

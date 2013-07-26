@@ -1,6 +1,6 @@
 package Git::ReleaseRepo::Repository;
 {
-  $Git::ReleaseRepo::Repository::VERSION = '0.003';
+  $Git::ReleaseRepo::Repository::VERSION = '0.004';
 }
 
 use Moose;
@@ -10,10 +10,10 @@ use File::Spec::Functions qw( catfile catdir );
 
 # The list of subs to install into the object
 sub _keywords { qw(
-    submodule submodule_git outdated checkout list_version_refs
+    submodule submodule_git outdated_tag outdated_branch checkout list_version_refs
     list_versions latest_version list_release_branches latest_release_branch
     version_sort show_ref ls_remote has_remote has_branch release_prefix
-    current_release
+    current_release current_branch run_cmd
 ) }
 
 # I do not like this, but I can't think of any better way to have a default
@@ -40,19 +40,38 @@ sub submodule_git {
     my $git = Git::Repository->new(
         work_tree => catdir( $self->work_tree, $module ),
     );
-    $git->release_prefix( $self->release_prefix );
+    if ( $self->release_prefix ) {
+        $git->release_prefix( $self->release_prefix );
+    }
     return $git;
 }
 
-sub outdated {
-    my ( $self, $ref ) = @_;
-    $ref ||= "refs/heads/master";
+sub outdated_branch {
+    my ( $self, $branch ) = @_;
+    $branch ||= "master";
     my %submod_refs = $self->submodule;
     my @outdated;
     for my $submod ( keys %submod_refs ) {
+        my $ref = "refs/remotes/origin/$branch";
         my $subgit = $self->submodule_git( $submod );
-        my %remote = $subgit->ls_remote;
-        if ( !exists $remote{ $ref } || $submod_refs{ $submod } ne $remote{$ref} ) {
+        my %remote = $subgit->show_ref;
+        if ( !exists $remote{ $ref } || $submod_refs{ $submod } ne $remote{ $ref } ) {
+            #print "OUTDATED $submod: $submod_refs{$submod} ne $remote{$ref}\n";
+            push @outdated, $submod;
+        }
+    }
+    return @outdated;
+}
+
+sub outdated_tag {
+    my ( $self, $tag ) = @_;
+    my %submod_refs = $self->submodule;
+    my @outdated;
+    for my $submod ( keys %submod_refs ) {
+        my $ref = "refs/tags/$tag";
+        my $subgit = $self->submodule_git( $submod );
+        my %remote = $subgit->show_ref;
+        if ( !exists $remote{ $ref } || $submod_refs{ $submod } ne $remote{ $ref } ) {
             #print "OUTDATED $submod: $submod_refs{$submod} ne $remote{$ref}\n";
             push @outdated, $submod;
         }
@@ -94,7 +113,7 @@ sub checkout {
 sub list_version_refs {
     my ( $self, $match, $rel_branch ) = @_;
     my $prefix = $rel_branch // $self->release_prefix;
-    my %refs = $self->has_remote( 'origin') ? $self->ls_remote( 'origin' ) : $self->show_ref;
+    my %refs = $self->show_ref;
     my @versions = reverse sort version_sort grep { m{^$prefix} } map { (split "/", $_)[-1] } grep { m{^refs/$match/} } keys %refs;
     return @versions;
 }
@@ -111,13 +130,14 @@ sub latest_version {
 }
 
 sub list_release_branches {
-    my ( $self ) = @_;
-    return $self->list_version_refs( 'heads' );
+    my ( $self, $ref ) = @_;
+    $ref ||= 'heads';
+    return $self->list_version_refs( $ref );
 }
 
 sub latest_release_branch {
-    my ( $self ) = @_;
-    my @branches = $self->list_release_branches;
+    my ( $self, $ref ) = @_;
+    my @branches = $self->list_release_branches( $ref );
     return $branches[0];
 }
 
@@ -158,6 +178,7 @@ sub ls_remote {
     }
     return wantarray ? %refs : \%refs;
 }
+#memoize( 'ls_remote', NORMALIZER => sub { return shift->work_tree } );
 
 sub has_remote {
     my ( $self, $name ) = @_;
@@ -167,6 +188,12 @@ sub has_remote {
 sub has_branch {
     my ( $self, $name ) = @_;
     return grep { $_ eq $name } map { s/[*]?\s+//; $_ } $self->run( 'branch' );
+}
+
+sub current_branch {
+    my ( $self ) = @_;
+    my @branches = map { s/^\*\s+//; $_ } grep { /^\*/ } $self->run( 'branch' );
+    return $branches[0];
 }
 
 sub current_release {
@@ -187,6 +214,16 @@ sub current_release {
     my $version = [ sort version_sort @tags ]->[0];
 #    ; warn "Current release: $version";
     return $version;
+}
+
+sub run_cmd {
+    my ( $self, @command ) = @_;
+    my $cmd = $self->command( @command );
+    my $stdout = readline $cmd->stdout;
+    my $stderr = readline $cmd->stderr;
+    $cmd->close;
+    my $code = $cmd->exit;
+    return ( $code, $stdout, $stderr );
 }
 
 1;

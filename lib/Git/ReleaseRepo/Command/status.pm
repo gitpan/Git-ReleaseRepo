@@ -1,6 +1,6 @@
 package Git::ReleaseRepo::Command::status;
 {
-  $Git::ReleaseRepo::Command::status::VERSION = '0.003';
+  $Git::ReleaseRepo::Command::status::VERSION = '0.004';
 }
 # ABSTRACT: Show the status of a release repository
 
@@ -9,6 +9,7 @@ use warnings;
 use List::MoreUtils qw( uniq );
 use Moose;
 use Git::ReleaseRepo -command;
+use Progress::Any;
 
 with 'Git::ReleaseRepo::WithVersionPrefix';
 
@@ -16,20 +17,34 @@ sub description {
     return 'Show the status of a release repository';
 }
 
-around opt_spec => sub {
-    my ( $orig, $self ) = @_;
-    return (
-        $self->$orig(),
-        [ 'bugfix' => 'Check the status of the current release branch' ],
-    );
-};
-
 augment execute => sub {
     my ( $self, $opt, $args ) = @_;
     # "master" looks at master since latest release branch
     # "bugfix" looks at release branch since latest release
     my ( $since_version, %outdated, %diff );
     my $git = $self->git;
+    my $bugfix = $git->current_branch ne 'master';
+
+    # We must fetch in order to get an accurate picture of the status
+    my @repos = ( $self->git, map { $self->git->submodule_git( $_ ) } keys $self->git->submodule );
+    my $progress = Progress::Any->get_indicator( task => "fetch" );
+    $progress->pos( 0 );
+    $progress->target( ~~@repos );
+    for my $git ( @repos ) {
+        next unless $git->has_remote( 'origin' );
+        my $cmd = $git->command( 'fetch', 'origin' );
+        my @stderr = readline $cmd->stderr;
+        my @stdout = readline $cmd->stdout;
+        $cmd->close;
+        if ( $cmd->exit != 0 ) {
+            die "ERROR: Could not fetch.\nEXIT: " . $cmd->exit . "\nSTDERR: " . ( join "\n", @stderr )
+                . "\nSTDOUT: " . ( join "\n", @stdout );
+        }
+        my ( $name ) = $git->work_tree =~ m{/([^/]+)$};
+        $progress->update( message => "Fetched $name" );
+    }
+    $progress->finish;
+
     # Deploy branch
     if ( my $track = $self->config->{track} ) {
         my $current = $git->current_release;
@@ -39,21 +54,20 @@ augment execute => sub {
             print " (can update to $latest)";
         }
         print "\n";
+        return 0;
     }
     # Bugfix release
-    elsif ( $opt->bugfix ) {
-        my $rel_branch = $git->latest_release_branch;
-        $git->checkout( $rel_branch );
+    elsif ( $bugfix ) {
+        my $rel_branch = $git->current_branch;
         $since_version = $git->latest_version( $rel_branch );
-        %outdated = map { $_ => 1 } $git->outdated( 'refs/heads/' . $rel_branch );
-        %diff = map { $_ => 1 } $git->outdated( 'refs/tags/' . $since_version );
+        %outdated = map { $_ => 1 } $git->outdated_branch( $rel_branch );
+        %diff = map { $_ => 1 } $git->outdated_tag( $since_version );
     }
     # Regular release
     else {
-        $git->checkout;
         $since_version = $git->latest_release_branch;
-        %outdated = map { $_ => 1 } $git->outdated( 'refs/heads/master' );
-        %diff = $since_version ? map { $_ => 1 } $git->outdated( 'refs/tags/' . $since_version . '.0' ) 
+        %outdated = map { $_ => 1 } $git->outdated_branch( 'master' );
+        %diff = $since_version ? map { $_ => 1 } $git->outdated_tag( $since_version . '.0' ) 
                 # If we haven't had a release yet, everything we have is different
                  : map { $_ => 1 } keys %{$git->submodule};
     }
@@ -69,7 +83,7 @@ augment execute => sub {
             print " changed";
         }
         if ( $outdated{$changed} ) {
-            print " (can add)";
+            print " (can update)";
         }
         print "\n";
     }
@@ -87,7 +101,7 @@ Git::ReleaseRepo::Command::status - Show the status of a release repository
 
 =head1 VERSION
 
-version 0.003
+version 0.004
 
 =head1 AUTHOR
 

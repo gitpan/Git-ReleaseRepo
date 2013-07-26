@@ -1,8 +1,8 @@
-package Git::ReleaseRepo::Command::release;
+package Git::ReleaseRepo::Command::commit;
 {
-  $Git::ReleaseRepo::Command::release::VERSION = '0.003';
+  $Git::ReleaseRepo::Command::commit::VERSION = '0.004';
 }
-# ABSTRACT: Perform a release
+# ABSTRACT: Commit a release
 
 use strict;
 use warnings;
@@ -16,19 +16,12 @@ sub description {
     return 'Perform a release';
 }
 
-around opt_spec => sub {
-    my ( $orig, $self ) = @_;
-    return (
-        $self->$orig(),
-        [ 'bugfix' => 'Release a bugfix release from the release branch' ],
-    );
-};
-
 augment execute => sub {
     my ( $self, $opt, $args ) = @_;
     my ( $version, $branch_version );
     my $git = $self->git;
     my $prefix = $self->release_prefix;
+    my $bugfix = $git->current_branch ne 'master';
     if ( $args->[0] ) {
         $version = $args->[0];
         ( $branch_version ) = $args->[0] =~ m/^($prefix\d+[.]\d+)/;
@@ -37,7 +30,7 @@ augment execute => sub {
         my $latest_version = $git->latest_version;
         my @parts = $latest_version ? split /[.]/, $latest_version
                   : ( "${prefix}0", 0, 0 ); # Our first release!
-        if ( $opt->{bugfix} ) {
+        if ( $bugfix ) {
             # Bugfix releases increment the third number
             $parts[2]++;
         }
@@ -52,22 +45,17 @@ augment execute => sub {
         $branch_version = join ".", @parts[0..1];
     }
     print "Release version $version\n";
-    print "Starting release cycle $branch_version\n" if !$opt->{bugfix};
-    if ( $opt->bugfix ) {
-        $git->checkout( $git->latest_release_branch );
-    }
-    else {
-        $git->checkout;
-    }
+    print "Starting release cycle $branch_version\n" if !$bugfix;
+
     # Release all modules too!
     for my $module ( keys $git->submodule ) {
         my $subgit = $git->submodule_git( $module );
-        if ( !$opt->{bugfix} ) {
+        if ( !$bugfix ) {
             $self->branch_release( $subgit, $branch_version );
         }
         $self->tag_release( $subgit, $version );
     }
-    if ( !$opt->{bugfix} ) {
+    if ( !$bugfix ) {
         $self->branch_release( $git, $branch_version );
     }
     $self->tag_release( $git, $version );
@@ -76,17 +64,11 @@ augment execute => sub {
 sub branch_release {
     my ( $self, $git, $version ) = @_;
     $git->run( branch => $version );
-    if ( $git->has_remote( 'origin' ) ) {
-        $git->command( push => origin => "$version:$version" );
-    }
 }
 
 sub tag_release {
     my ( $self, $git, $version ) = @_;
     $git->run( tag => $version );
-    if ( $git->has_remote( 'origin' ) ) {
-        $git->command( push => origin => '--tags' );
-    }
 }
 
 1;
@@ -97,11 +79,11 @@ __END__
 
 =head1 NAME
 
-Git::ReleaseRepo::Command::release - Perform a release
+Git::ReleaseRepo::Command::commit - Commit a release
 
 =head1 VERSION
 
-version 0.003
+version 0.004
 
 =head1 AUTHOR
 
