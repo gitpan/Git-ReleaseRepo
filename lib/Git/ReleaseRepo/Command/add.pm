@@ -1,6 +1,6 @@
 package Git::ReleaseRepo::Command::add;
 {
-  $Git::ReleaseRepo::Command::add::VERSION = '0.004';
+  $Git::ReleaseRepo::Command::add::VERSION = '0.005';
 }
 # ABSTRACT: Add a new module to the next release
 
@@ -54,7 +54,7 @@ Git::ReleaseRepo::Command::add - Add a new module to the next release
 
 =head1 VERSION
 
-version 0.004
+version 0.005
 
 =head1 DESCRIPTION
 

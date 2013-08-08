@@ -1,6 +1,6 @@
 package Git::ReleaseRepo::Command::clone;
 {
-  $Git::ReleaseRepo::Command::clone::VERSION = '0.004';
+  $Git::ReleaseRepo::Command::clone::VERSION = '0.005';
 }
 # ABSTRACT: Clone an existing release repository
 
@@ -51,7 +51,7 @@ Git::ReleaseRepo::Command::clone - Clone an existing release repository
 
 =head1 VERSION
 
-version 0.004
+version 0.005
 
 =head1 AUTHOR
 

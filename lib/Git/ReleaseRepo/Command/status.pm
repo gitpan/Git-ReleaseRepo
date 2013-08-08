@@ -1,6 +1,6 @@
 package Git::ReleaseRepo::Command::status;
 {
-  $Git::ReleaseRepo::Command::status::VERSION = '0.004';
+  $Git::ReleaseRepo::Command::status::VERSION = '0.005';
 }
 # ABSTRACT: Show the status of a release repository
 
@@ -26,7 +26,7 @@ augment execute => sub {
     my $bugfix = $git->current_branch ne 'master';
 
     # We must fetch in order to get an accurate picture of the status
-    my @repos = ( $self->git, map { $self->git->submodule_git( $_ ) } keys $self->git->submodule );
+    my @repos = ( $self->git, map { $self->git->submodule_git( $_ ) } keys %{ $self->git->submodule } );
     my $progress = Progress::Any->get_indicator( task => "fetch" );
     $progress->pos( 0 );
     $progress->target( ~~@repos );
@@ -101,7 +101,7 @@ Git::ReleaseRepo::Command::status - Show the status of a release repository
 
 =head1 VERSION
 
-version 0.004
+version 0.005
 
 =head1 AUTHOR
 

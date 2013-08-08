@@ -1,9 +1,25 @@
 ==================================================
-Changes from 2012-07-26 00:00:00 +0000 to present.
+Changes from 2012-08-08 00:00:00 +0000 to present.
 ==================================================
 
 ------------------------------------------
-version 0.004 at 2013-07-26 12:54:53 +0000
+version 0.005 at 2013-08-08 19:29:18 +0000
+------------------------------------------
+
+  Change: e917df341411961d22b598acb119751a7ddf1376
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2013-08-08 14:29:08 +0000
+
+    Release v0.005 
+
+  Change: f0d8b215e7cf4aac9d740b458c3671afab44f554
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2013-08-08 14:26:44 +0000
+
+    make code work on perl 5.12. keys() takes a hash, not an expr 
+
+------------------------------------------
+version 0.004 at 2013-07-19 19:02:51 +0000
 ------------------------------------------
 
   Change: 4de20d438dff2d732ece97395e6c0ecd63fd7a05

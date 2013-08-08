@@ -1,6 +1,6 @@
 package Git::ReleaseRepo;
 {
-  $Git::ReleaseRepo::VERSION = '0.004';
+  $Git::ReleaseRepo::VERSION = '0.005';
 }
 # ABSTRACT: Manage a release repository of Git submodules
 
@@ -21,7 +21,7 @@ Git::ReleaseRepo - Manage a release repository of Git submodules
 
 =head1 VERSION
 
-version 0.004
+version 0.005
 
 =head1 DESCRIPTION
 

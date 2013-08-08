@@ -1,6 +1,6 @@
 package Git::ReleaseRepo::Command::deploy;
 {
-  $Git::ReleaseRepo::Command::deploy::VERSION = '0.004';
+  $Git::ReleaseRepo::Command::deploy::VERSION = '0.005';
 }
 # ABSTRACT: Deploy a release repository
 
@@ -104,7 +104,7 @@ Git::ReleaseRepo::Command::deploy - Deploy a release repository
 
 =head1 VERSION
 
-version 0.004
+version 0.005
 
 =head1 AUTHOR
 

@@ -1,6 +1,6 @@
 package Git::ReleaseRepo::Command::push;
 {
-  $Git::ReleaseRepo::Command::push::VERSION = '0.004';
+  $Git::ReleaseRepo::Command::push::VERSION = '0.005';
 }
 # ABSTRACT: Push a release
 
@@ -27,7 +27,7 @@ augment execute => sub {
     $version_prog->pos( 0 );
     $version_prog->target( ~~@versions );
     for my $version ( @versions ) {
-        my @repos = ( $self->git, map { $self->git->submodule_git( $_ ) } keys $self->git->submodule );
+        my @repos = ( $self->git, map { $self->git->submodule_git( $_ ) } keys %{ $self->git->submodule } );
         my $repo_prog = Progress::Any->get_indicator( task => "main.push" );
         $repo_prog->pos( 0 );
         $repo_prog->target( ~~@repos );
@@ -74,7 +74,7 @@ Git::ReleaseRepo::Command::push - Push a release
 
 =head1 VERSION
 
-version 0.004
+version 0.005
 
 =head1 AUTHOR
 

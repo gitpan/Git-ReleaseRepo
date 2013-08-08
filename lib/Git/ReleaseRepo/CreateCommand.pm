@@ -1,6 +1,6 @@
 package Git::ReleaseRepo::CreateCommand;
 {
-  $Git::ReleaseRepo::CreateCommand::VERSION = '0.004';
+  $Git::ReleaseRepo::CreateCommand::VERSION = '0.005';
 }
 # ABSTRACT: Base class for commands that have to create a new repository
 
@@ -59,7 +59,7 @@ Git::ReleaseRepo::CreateCommand - Base class for commands that have to create a 
 
 =head1 VERSION
 
-version 0.004
+version 0.005
 
 =head1 AUTHOR
 

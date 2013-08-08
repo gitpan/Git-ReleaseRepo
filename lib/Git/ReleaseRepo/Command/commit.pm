@@ -1,6 +1,6 @@
 package Git::ReleaseRepo::Command::commit;
 {
-  $Git::ReleaseRepo::Command::commit::VERSION = '0.004';
+  $Git::ReleaseRepo::Command::commit::VERSION = '0.005';
 }
 # ABSTRACT: Commit a release
 
@@ -48,7 +48,7 @@ augment execute => sub {
     print "Starting release cycle $branch_version\n" if !$bugfix;
 
     # Release all modules too!
-    for my $module ( keys $git->submodule ) {
+    for my $module ( keys %{ $git->submodule } ) {
         my $subgit = $git->submodule_git( $module );
         if ( !$bugfix ) {
             $self->branch_release( $subgit, $branch_version );
@@ -83,7 +83,7 @@ Git::ReleaseRepo::Command::commit - Commit a release
 
 =head1 VERSION
 
-version 0.004
+version 0.005
 
 =head1 AUTHOR
 

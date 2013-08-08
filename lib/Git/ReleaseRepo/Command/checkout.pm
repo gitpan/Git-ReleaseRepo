@@ -1,6 +1,6 @@
 package Git::ReleaseRepo::Command::checkout;
 {
-  $Git::ReleaseRepo::Command::checkout::VERSION = '0.004';
+  $Git::ReleaseRepo::Command::checkout::VERSION = '0.005';
 }
 # ABSTRACT: Checkout a release repository to work on it
 
@@ -78,7 +78,7 @@ Git::ReleaseRepo::Command::checkout - Checkout a release repository to work on i
 
 =head1 VERSION
 
-version 0.004
+version 0.005
 
 =head1 AUTHOR
 

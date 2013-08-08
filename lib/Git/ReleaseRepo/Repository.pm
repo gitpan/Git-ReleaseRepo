@@ -1,6 +1,6 @@
 package Git::ReleaseRepo::Repository;
 {
-  $Git::ReleaseRepo::Repository::VERSION = '0.004';
+  $Git::ReleaseRepo::Repository::VERSION = '0.005';
 }
 
 use Moose;

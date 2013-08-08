@@ -1,6 +1,6 @@
 package Git::ReleaseRepo::Command::pull;
 {
-  $Git::ReleaseRepo::Command::pull::VERSION = '0.004';
+  $Git::ReleaseRepo::Command::pull::VERSION = '0.005';
 }
 # ABSTRACT: Update a release repository
 
@@ -37,7 +37,7 @@ augment execute => sub {
                     : $opt->{branch} ? $opt->{branch}
                     : $self->config->{track} ? $self->config->{track}
                     : $git->current_branch;
-    my @repos = ( $self->git, map { $self->git->submodule_git( $_ ) } keys $self->git->submodule );
+    my @repos = ( $self->git, map { $self->git->submodule_git( $_ ) } keys %{ $self->git->submodule } );
     my $version_prog = Progress::Any->get_indicator( task => 'main' );
     $version_prog->pos( 0 );
     $version_prog->target( ~~@repos );
@@ -98,7 +98,7 @@ Git::ReleaseRepo::Command::pull - Update a release repository
 
 =head1 VERSION
 
-version 0.004
+version 0.005
 
 =head1 AUTHOR
 

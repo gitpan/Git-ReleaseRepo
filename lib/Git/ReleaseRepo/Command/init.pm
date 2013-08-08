@@ -1,6 +1,6 @@
 package Git::ReleaseRepo::Command::init;
 {
-  $Git::ReleaseRepo::Command::init::VERSION = '0.004';
+  $Git::ReleaseRepo::Command::init::VERSION = '0.005';
 }
 # ABSTRACT: Initialize Git::ReleaseRepo
 
@@ -61,7 +61,7 @@ Git::ReleaseRepo::Command::init - Initialize Git::ReleaseRepo
 
 =head1 VERSION
 
-version 0.004
+version 0.005
 
 =head1 AUTHOR
 

@@ -1,6 +1,6 @@
 package Git::ReleaseRepo::Command::update;
 {
-  $Git::ReleaseRepo::Command::update::VERSION = '0.004';
+  $Git::ReleaseRepo::Command::update::VERSION = '0.005';
 }
 # ABSTRACT: Update an existing module in the next release
 
@@ -102,7 +102,7 @@ Git::ReleaseRepo::Command::update - Update an existing module in the next releas
 
 =head1 VERSION
 
-version 0.004
+version 0.005
 
 =head1 DESCRIPTION
 
