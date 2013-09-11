@@ -1,9 +1,82 @@
 ==================================================
-Changes from 2012-08-08 00:00:00 +0000 to present.
+Changes from 2012-09-11 00:00:00 +0000 to present.
 ==================================================
 
 ------------------------------------------
-version 0.005 at 2013-08-08 19:29:18 +0000
+version 0.006 at 2013-09-11 22:58:19 +0000
+------------------------------------------
+
+  Change: fb0e47234352a80357849d944fa974abc3d2f876
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-09-11 14:54:43 +0000
+
+    fix reference_root code to work on perl 5.12 
+
+  Change: dd0dbe8d46a8c8965b63db0c013d2b3bc28ab21c
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-09-11 14:41:56 +0000
+
+    don't use a remote that we don't have... 
+
+  Change: 316bdcb9f9349e34457dd47d34a457477b624574
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-09-11 14:33:36 +0000
+
+    fix #16: newly-cloned repository reports incorrect status 
+
+  Change: f993abffa8bfba8595639924d75db12f8a502573
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2013-09-09 18:18:21 +0000
+
+    commit a test for #16 
+
+  Change: dd2d16ffccf619a2df769688c145f82f3b89c3b6
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2013-09-09 17:38:54 +0000
+
+    fix the rest of #15: Cannot push refspec any 
+
+  Change: 483161ccb2ea766c5166917940cb5a023445a5d6
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-09-03 17:02:51 +0000
+
+    fix #15: unable to checkout or push release in repo cloned after a
+    release 
+
+  Change: dc8f9cfc03667d07902005d2ab17d8a8feec5eae
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-09-03 14:49:17 +0000
+
+    update version and readme for new author 
+
+  Change: eabc20fc9a19af3b15198ede003783a02fdefa9d
+  Author: Doug Bell <doug.bell@baml.com>
+  Date : 2013-09-03 14:37:39 +0000
+
+    add Andrew as an author 
+
+  Change: be977bde58e0f6bc32f0589247703e6049aed1f2
+  Author: Doug Bell <madcityzen@gmail.com>
+  Date : 2013-09-03 11:27:04 +0000
+
+    Merge pull request #14 from adgoudz/andrew
+
+    add reference option for all create and add commands 
+
+  Change: 4ebcb5b720a2242d9ce9fcc050a342c3e14442a8
+  Author: Andrew Goudzwaard <andrew.goudzwaard@baml.com>
+  Date : 2013-08-16 08:55:58 +0000
+
+    add reference option for all create and add commands 
+
+  Change: 04283762a3f416d196a4ab6ecd407c7741a24f36
+  Author: Andrew Goudzwaard <andrew.goudzwaard@baml.com>
+  Date : 2013-08-13 14:04:16 +0000
+
+    allow for absolute target paths in create commands 
+
+------------------------------------------
+version 0.005 at 2013-08-08 19:29:08 +0000
 ------------------------------------------
 
   Change: e917df341411961d22b598acb119751a7ddf1376

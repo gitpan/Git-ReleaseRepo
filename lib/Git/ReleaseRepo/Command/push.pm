@@ -1,6 +1,6 @@
 package Git::ReleaseRepo::Command::push;
 {
-  $Git::ReleaseRepo::Command::push::VERSION = '0.005';
+  $Git::ReleaseRepo::Command::push::VERSION = '0.006';
 }
 # ABSTRACT: Push a release
 
@@ -34,6 +34,12 @@ augment execute => sub {
         for my $git ( @repos ) {
             my ( $name ) = $git->work_tree =~ m{/([^/]+)$};
             unless ( $git->has_remote( 'origin' ) ) {
+                # This submodule, for some reason, only exists inside this repository
+                $repo_prog->update( message => "Skipped $name" );
+                next;
+            }
+            unless ( $git->has_branch( $version ) ) {
+                # Can't push a refspec that doesn't exist
                 $repo_prog->update( message => "Skipped $name" );
                 next;
             }
@@ -74,11 +80,21 @@ Git::ReleaseRepo::Command::push - Push a release
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
-=head1 AUTHOR
+=head1 AUTHORS
+
+=over 4
+
+=item *
 
 Doug Bell <preaction@cpan.org>
+
+=item *
+
+Andrew Goudzwaard <adgoudz@gmail.com>
+
+=back
 
 =head1 COPYRIGHT AND LICENSE
 

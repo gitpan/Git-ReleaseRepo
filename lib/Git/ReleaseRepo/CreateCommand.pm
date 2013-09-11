@@ -1,6 +1,6 @@
 package Git::ReleaseRepo::CreateCommand;
 {
-  $Git::ReleaseRepo::CreateCommand::VERSION = '0.005';
+  $Git::ReleaseRepo::CreateCommand::VERSION = '0.006';
 }
 # ABSTRACT: Base class for commands that have to create a new repository
 
@@ -35,7 +35,7 @@ sub update_config {
 sub validate_args {
     my ( $self, $opt, $args ) = @_;
     return $self->usage_error( "Must give a repository URL!" ) if ( @$args < 1 );
-    return $self->usage_error( "Too many arguments" ) if ( @$args > 2 );
+    return $self->usage_error( "Too many arguments" ) if ( @$args > 3 );
     return $self->usage_error( 'Must specify --version_prefix' ) unless $opt->{version_prefix};
 }
 
@@ -44,6 +44,7 @@ around opt_spec => sub {
     return (
         $self->$orig,
         [ 'version_prefix:s' => 'Set the version prefix of the release repository' ],
+        [ 'reference_root=s' => 'Specify a directory containing existing submodules to reference' ],
     );
 };
 
@@ -59,11 +60,21 @@ Git::ReleaseRepo::CreateCommand - Base class for commands that have to create a 
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
-=head1 AUTHOR
+=head1 AUTHORS
+
+=over 4
+
+=item *
 
 Doug Bell <preaction@cpan.org>
+
+=item *
+
+Andrew Goudzwaard <adgoudz@gmail.com>
+
+=back
 
 =head1 COPYRIGHT AND LICENSE
 

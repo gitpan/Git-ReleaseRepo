@@ -3,8 +3,8 @@ use Test::Most;
 use Cwd qw( getcwd );
 use File::Temp;
 use Test::Git;
-use Git::ReleaseRepo::Test qw( run_cmd get_cmd_result create_module_repo repo_tags repo_branches 
-                            create_clone repo_root commit_all last_commit current_branch repo_refs 
+use Git::ReleaseRepo::Test qw( run_cmd get_cmd_result create_module_repo repo_tags repo_branches
+                            create_clone repo_root commit_all last_commit current_branch repo_refs
                             create_release_repo );
 use File::Spec::Functions qw( catdir catfile );
 use File::Slurp qw( write_file );
@@ -36,7 +36,7 @@ sub test_clone($$$$) {
         ok -d catdir( $dir, $name ), 'dir is named correctly';
         subtest 'submodules are initialized' => sub {
             for my $mod ( @$modules ) {
-                ok -f catfile( $dir, $name, $mod, 'README' ), 'submodule "module" is initialized';
+                ok -f catfile( $dir, $name, $mod, 'README' ), "submodule '$mod' is initialized";
             }
         };
         my $conf_file = catfile( $clone_dir, $name, '.git', 'release' );
@@ -50,8 +50,28 @@ sub test_clone($$$$) {
 subtest 'deploy' => sub {
     chdir $clone_dir;
     run_cmd( 'deploy', 'file://' . $origin_repo->work_tree, 'deploy', '--version_prefix', 'v' );
-    subtest 'deploy is correct'
+    subtest 'relative deploy is correct'
         => test_clone $clone_dir, 'deploy', [qw( module other )], { track => 'v0.1', version_prefix => 'v' };
+    chdir $cwd;
+
+    my $name = 'prd-deploy';
+    my $directory = catfile( $clone_dir, $name );
+    run_cmd( 'deploy', 'file://' . $origin_repo->work_tree, $directory, '--version_prefix', 'v' );
+    subtest 'absolute deploy is correct'
+        => test_clone $clone_dir, $name, [qw( module other )], { track => 'v0.1', version_prefix => 'v' };
+};
+
+subtest 'deploy with reference' => sub {
+    chdir $clone_dir;
+    run_cmd( 'deploy', 'file://' . $origin_repo->work_tree, 'referencing', '--reference_root', $clone_dir, '--version_prefix', 'v' );
+    subtest 'deploy is correct'
+        => test_clone $clone_dir, 'referencing', [qw( module other )], { track => 'v0.1', version_prefix => 'v' };
+    for my $mod (qw( module other )) {
+        my $submodule_git = catfile( $clone_dir, 'referencing', '.git', 'modules', $mod);
+        ok -f catfile( $submodule_git, 'objects', 'info', 'alternates' ),
+            "submodule '$mod' has alternates reference";
+    }
+    chdir $cwd;
 };
 
 subtest 'error without version_prefix' => sub {
@@ -69,14 +89,13 @@ subtest 'error with not enough arguments' => sub {
     isnt $code, 0, 'error with not enough arguments';
 };
 
-subtest 'default name' => sub {
+subtest 'default directory' => sub {
     chdir $clone_dir;
     my $name = basename( $origin_repo->work_tree ) . '-v0.1';
     run_cmd( 'deploy', 'file://' . $origin_repo->work_tree, '--version_prefix', 'v' );
     subtest 'deploy is correct'
         => test_clone $clone_dir, $name, [qw( module other )], { track => 'v0.1', version_prefix => 'v' };
+    chdir $cwd;
 };
-
-chdir $cwd;
 
 done_testing;

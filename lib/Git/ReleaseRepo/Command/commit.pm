@@ -1,6 +1,6 @@
 package Git::ReleaseRepo::Command::commit;
 {
-  $Git::ReleaseRepo::Command::commit::VERSION = '0.005';
+  $Git::ReleaseRepo::Command::commit::VERSION = '0.006';
 }
 # ABSTRACT: Commit a release
 
@@ -83,11 +83,21 @@ Git::ReleaseRepo::Command::commit - Commit a release
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
-=head1 AUTHOR
+=head1 AUTHORS
+
+=over 4
+
+=item *
 
 Doug Bell <preaction@cpan.org>
+
+=item *
+
+Andrew Goudzwaard <adgoudz@gmail.com>
+
+=back
 
 =head1 COPYRIGHT AND LICENSE
 

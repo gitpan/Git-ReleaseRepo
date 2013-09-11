@@ -1,6 +1,6 @@
 package Git::ReleaseRepo::Command::add;
 {
-  $Git::ReleaseRepo::Command::add::VERSION = '0.005';
+  $Git::ReleaseRepo::Command::add::VERSION = '0.006';
 }
 # ABSTRACT: Add a new module to the next release
 
@@ -28,15 +28,27 @@ sub validate_args {
     }
 }
 
+around opt_spec => sub {
+    my ( $orig, $self ) = @_;
+    return (
+        $self->$orig,
+        [ 'reference_root=s' => 'Specify a directory containing an existing module to reference' ],
+    );
+};
+
 augment execute => sub {
     my ( $self, $opt, $args ) = @_;
     my $git = $self->git;
     my $branch = $git->current_branch;
     my $repo = $args->[1];
     my $module = $args->[0];
-    $git->run(
-        submodule => add => '--', $repo, $module,
-    );
+    if ( $opt->{reference_root} ) {
+        my $reference = catdir( $opt->{reference_root}, $module );
+        $git->run( submodule => add => '--reference' => $reference, '--', $repo, $module );
+    }
+    else {
+        $git->run( submodule => add => '--', $repo, $module );
+    }
     $git->run( commit => ( '.gitmodules', $module ), -m => "Adding $module to release" );
 };
 
@@ -54,7 +66,7 @@ Git::ReleaseRepo::Command::add - Add a new module to the next release
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
 =head1 DESCRIPTION
 
@@ -64,9 +76,19 @@ Add a module to the next release.
 
 Git::ReleaseRepo::Command::add - Add a module to the next release
 
-=head1 AUTHOR
+=head1 AUTHORS
+
+=over 4
+
+=item *
 
 Doug Bell <preaction@cpan.org>
+
+=item *
+
+Andrew Goudzwaard <adgoudz@gmail.com>
+
+=back
 
 =head1 COPYRIGHT AND LICENSE
 

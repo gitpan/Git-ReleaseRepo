@@ -1,6 +1,6 @@
 package Git::ReleaseRepo::Command;
 {
-  $Git::ReleaseRepo::Command::VERSION = '0.005';
+  $Git::ReleaseRepo::Command::VERSION = '0.006';
 }
 
 use strict;

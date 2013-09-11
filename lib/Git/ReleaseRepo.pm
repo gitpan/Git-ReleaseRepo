@@ -1,6 +1,6 @@
 package Git::ReleaseRepo;
 {
-  $Git::ReleaseRepo::VERSION = '0.005';
+  $Git::ReleaseRepo::VERSION = '0.006';
 }
 # ABSTRACT: Manage a release repository of Git submodules
 
@@ -21,7 +21,7 @@ Git::ReleaseRepo - Manage a release repository of Git submodules
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
 =head1 DESCRIPTION
 
@@ -60,9 +60,19 @@ The same branches are created in submodules to allow for bugfix commits.
 
 New bugfix versions are created from the release branch.
 
-=head1 AUTHOR
+=head1 AUTHORS
+
+=over 4
+
+=item *
 
 Doug Bell <preaction@cpan.org>
+
+=item *
+
+Andrew Goudzwaard <adgoudz@gmail.com>
+
+=back
 
 =head1 COPYRIGHT AND LICENSE
 

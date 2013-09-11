@@ -1,6 +1,6 @@
 package Git::ReleaseRepo::Command::status;
 {
-  $Git::ReleaseRepo::Command::status::VERSION = '0.005';
+  $Git::ReleaseRepo::Command::status::VERSION = '0.006';
 }
 # ABSTRACT: Show the status of a release repository
 
@@ -65,7 +65,9 @@ augment execute => sub {
     }
     # Regular release
     else {
-        $since_version = $git->latest_release_branch;
+        $since_version = $git->has_remote( 'origin' )
+                       ? $git->latest_release_branch( 'remotes/origin' )
+                       : $git->latest_release_branch;
         %outdated = map { $_ => 1 } $git->outdated_branch( 'master' );
         %diff = $since_version ? map { $_ => 1 } $git->outdated_tag( $since_version . '.0' ) 
                 # If we haven't had a release yet, everything we have is different
@@ -101,11 +103,21 @@ Git::ReleaseRepo::Command::status - Show the status of a release repository
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
-=head1 AUTHOR
+=head1 AUTHORS
+
+=over 4
+
+=item *
 
 Doug Bell <preaction@cpan.org>
+
+=item *
+
+Andrew Goudzwaard <adgoudz@gmail.com>
+
+=back
 
 =head1 COPYRIGHT AND LICENSE
 

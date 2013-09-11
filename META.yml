@@ -2,6 +2,7 @@
 abstract: 'Manage a release repository of Git submodules'
 author:
   - 'Doug Bell <preaction@cpan.org>'
+  - 'Andrew Goudzwaard <adgoudz@gmail.com>'
 build_requires:
   File::Slurp: 0
   File::Spec::Functions: 0
@@ -13,7 +14,7 @@ configure_requires:
   ExtUtils::MakeMaker: 6.30
   Module::Build: 0.3601
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 4.300035, CPAN::Meta::Converter version 2.132140'
+generated_by: 'Dist::Zilla version 4.300035, CPAN::Meta::Converter version 2.131560'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -34,4 +35,4 @@ resources:
   bugtracker: https://github.com/preaction/Git-ReleaseRepo/issues
   homepage: https://github.com/preaction/Git-ReleaseRepo
   repository: https://github.com/preaction/Git-ReleaseRepo.git
-version: 0.005
+version: 0.006

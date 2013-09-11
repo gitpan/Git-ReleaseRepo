@@ -1,6 +1,6 @@
 package Git::ReleaseRepo::Command::update;
 {
-  $Git::ReleaseRepo::Command::update::VERSION = '0.005';
+  $Git::ReleaseRepo::Command::update::VERSION = '0.006';
 }
 # ABSTRACT: Update an existing module in the next release
 
@@ -102,7 +102,7 @@ Git::ReleaseRepo::Command::update - Update an existing module in the next releas
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
 =head1 DESCRIPTION
 
@@ -110,9 +110,19 @@ version 0.005
 
 Git::ReleaseRepo::Command::update - Update an existing module in the next release
 
-=head1 AUTHOR
+=head1 AUTHORS
+
+=over 4
+
+=item *
 
 Doug Bell <preaction@cpan.org>
+
+=item *
+
+Andrew Goudzwaard <adgoudz@gmail.com>
+
+=back
 
 =head1 COPYRIGHT AND LICENSE
 

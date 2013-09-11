@@ -1,6 +1,6 @@
 package Git::ReleaseRepo::Test;
 {
-  $Git::ReleaseRepo::Test::VERSION = '0.005';
+  $Git::ReleaseRepo::Test::VERSION = '0.006';
 }
 
 use strict;
